@@ -1,4 +1,4 @@
-# Seeker's front test
+# Seekret's front test
 
 ## Commands
 
