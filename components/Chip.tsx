@@ -15,7 +15,7 @@ const useStyles = makeStyles({
 
 export default function Chip({
     label,
-    tagProps,
+    onDelete,
     ...props
 }: Props): JSX.Element {
     const classes = useStyles();
@@ -25,7 +25,7 @@ export default function Chip({
             className={classes.root}
             avatar={<Avatar alt="chip icon" src="/assets/svg-flat.svg" />}
             label={label}
-            {...tagProps}
+            {...(onDelete && { onDelete: onDelete })}
             {...props}
         />
     );

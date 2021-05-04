@@ -1,17 +1,18 @@
-import Chip from "@components/Chip";
+import Autocomplete from "@components/Autocomplete";
 import Button from "@material-ui/core/Button";
 import Dialog, { DialogProps } from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import makeStyles from "@material-ui/core/styles/makeStyles";
-import TextField from "@material-ui/core/TextField";
 import { TransitionProps } from "@material-ui/core/transitions";
 import Zoom from "@material-ui/core/Zoom";
-import Autocomplete from "@material-ui/lab/Autocomplete";
 import { useRouter } from "next/router";
-import { ChangeEvent, forwardRef, ReactElement, Ref, useState } from "react";
+import { forwardRef, ReactElement, Ref, useState } from "react";
 
-import { filterOptions, getOptionLabel, OptionType } from "./functions";
+interface OptionType {
+    inputValue?: string;
+    title: string;
+}
 
 const Transition = forwardRef(function Transition(
     props: TransitionProps & { children?: ReactElement<any, any> },
@@ -36,20 +37,13 @@ const useStyles = makeStyles({
     },
 });
 
-const limitTagsText = (more: number) => {
-    return <Chip label={`${more} more`} />;
-};
-
 export default function FormDialog(props: DialogProps): JSX.Element {
     const router = useRouter();
     const classes = useStyles();
 
     const [selected, setSelected] = useState<string[]>([]);
 
-    const handleChangeSub = (
-        event: ChangeEvent<HTMLInputElement>,
-        values: [OptionType],
-    ) => {
+    const handleChangeSub = (values: [OptionType]) => {
         setSelected(
             values.map((elm: OptionType) => elm?.inputValue || elm.title),
         );
@@ -69,39 +63,7 @@ export default function FormDialog(props: DialogProps): JSX.Element {
             classes={{ paper: classes.dialog }}
             {...props}>
             <DialogContent>
-                <Autocomplete
-                    onChange={handleChangeSub}
-                    limitTags={3}
-                    getLimitTagsText={limitTagsText}
-                    classes={{
-                        root: classes.autoRoot,
-                        input: classes.autoInput,
-                    }}
-                    freeSolo
-                    multiple
-                    options={options}
-                    getOptionLabel={getOptionLabel}
-                    filterOptions={filterOptions}
-                    filterSelectedOptions
-                    renderOption={(option) => option.title}
-                    renderTags={(tagValue, getTagProps) => {
-                        return tagValue.map((option, idx) => (
-                            <Chip
-                                key={idx}
-                                label={option?.inputValue || option.title}
-                                tagProps={getTagProps({ index: idx })}
-                            />
-                        ));
-                    }}
-                    renderInput={(params) => (
-                        <TextField
-                            label="Subs"
-                            variant="outlined"
-                            placeholder="more"
-                            {...params}
-                        />
-                    )}
-                />
+                <Autocomplete onChange={handleChangeSub} options={options} />
             </DialogContent>
             <DialogActions className={classes.dialogActions}>
                 <Button onClick={handleSubscribe} color="primary">
