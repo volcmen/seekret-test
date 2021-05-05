@@ -24,4 +24,4 @@ Shows syntax, lint errors. Use `--fix` to fix possible issues.
 - [Next.js](https://nextjs.org/)
 - [MATERIAL-UI](https://material-ui.com/)
 
-## Aproximetly time spent `3 hours 18 minutes`
+## Aproximetly time spent `6 hours 34 minutes`

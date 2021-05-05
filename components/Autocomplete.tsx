@@ -1,11 +1,11 @@
 import Chip from "@components/Chip";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
-import InputAdornment from "@material-ui/core/InputAdornment";
 import Popper from "@material-ui/core/Popper";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import CloseIcon from "@material-ui/icons/Close";
+import clsx from "clsx";
 import {
     ChangeEvent,
     FocusEvent,
@@ -41,12 +41,26 @@ const useStyles = makeStyles((theme: Theme) =>
         popper: {
             zIndex: theme.zIndex.modal,
         },
+        startAdornment: {
+            flexWrap: "wrap",
+            padding: "10px",
+            paddingRight: "45px",
+        },
+        endAnd: {
+            top: "calc(50% - 25px)",
+            right: 0,
+            position: "absolute",
+            display: "none",
+        },
+        endAndOpen: {
+            display: "initial",
+        },
     }),
 );
 
 interface Props {
     options: any[];
-    onChange: (values: any) => void;
+    onChange: (values: string[]) => void;
 }
 
 interface ShowChipProps {
@@ -190,7 +204,6 @@ export default function Autocomplete(props: Props): JSX.Element {
     return (
         <div>
             <TextField
-                style={{ flexWrap: "wrap" }}
                 fullWidth
                 label="Subs"
                 variant="outlined"
@@ -203,24 +216,21 @@ export default function Autocomplete(props: Props): JSX.Element {
                 InputProps={{
                     "aria-autocomplete": "list",
                     // ref: setAnchorEl,
+                    className: classes.startAdornment,
                     startAdornment: (
-                        <InputAdornment
-                            position="start"
-                            style={{
-                                maxHeight: "20rem",
-                                display: "inline-flex",
-                                flexWrap: "wrap",
-                            }}>
-                            <ShowChips
-                                anchorEl={anchorEl}
-                                selected={selectedValues}
-                                onDelete={handleDeleteElm}
-                            />
-                        </InputAdornment>
+                        <ShowChips
+                            anchorEl={anchorEl}
+                            selected={selectedValues}
+                            onDelete={handleDeleteElm}
+                        />
                     ),
 
                     endAdornment: (
-                        <IconButton onClick={handleClearSearch}>
+                        <IconButton
+                            onClick={handleClearSearch}
+                            className={clsx(classes.endAnd, {
+                                [classes.endAndOpen]: listOpen,
+                            })}>
                             <CloseIcon />
                         </IconButton>
                     ),
