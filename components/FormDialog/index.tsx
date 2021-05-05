@@ -43,10 +43,8 @@ export default function FormDialog(props: DialogProps): JSX.Element {
 
     const [selected, setSelected] = useState<string[]>([]);
 
-    const handleChangeSub = (values: [OptionType]) => {
-        setSelected(
-            values.map((elm: OptionType) => elm?.inputValue || elm.title),
-        );
+    const handleChangeSub = (values: string[]) => {
+        setSelected(values);
     };
 
     const handleSubscribe = () => {
